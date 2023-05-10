@@ -3,11 +3,11 @@ using Azure.Storage.Blobs.Models;
 
 string connectionString = "DefaultEndpointsProtocol=https;AccountName=jtappstore;AccountKey=hTeY0UshDRhr+vvDDtvnyaB3mp24zGKyas2G8s+MbCGvrIzgCRUhrrjWDKA1YYafmjk2+K5IHp1D+AStAim0Hg==;EndpointSuffix=core.windows.net";
 string containerName = "data";
+string blobName = "script.sql";
+string filePath = "D:\\Study";
 
-BlobContainerClient blobContainerClient = new BlobContainerClient(connectionString, containerName);
+BlobClient blobClient =new BlobClient(connectionString, containerName,blobName);
 
-await foreach (BlobItem blobItem in blobContainerClient.GetBlobsAsync())
-{
-    Console.WriteLine("The Blob Name is {0}", blobItem.Name);
-    Console.WriteLine("The Blob Size is {0}", blobItem.Properties.ContentLength);
-}
+await blobClient.DownloadToAsync(filePath);
+
+Console.WriteLine("The blob is downloaded");

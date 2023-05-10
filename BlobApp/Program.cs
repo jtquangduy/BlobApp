@@ -1,22 +1,13 @@
 ﻿using Azure.Storage.Blobs;
-//using Azure.Storage.Blobs.Models;
-
+using Azure.Storage.Blobs.Models;
 
 string connectionString = "DefaultEndpointsProtocol=https;AccountName=jtappstore;AccountKey=hTeY0UshDRhr+vvDDtvnyaB3mp24zGKyas2G8s+MbCGvrIzgCRUhrrjWDKA1YYafmjk2+K5IHp1D+AStAim0Hg==;EndpointSuffix=core.windows.net";
-string containerName = "scripts";
-string blobName = "script.sql";
-string filepath = "D:\\Study\\mysql\\script.sql";
+string containerName = "data";
 
-//BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+BlobContainerClient blobContainerClient = new BlobContainerClient(connectionString, containerName);
 
-BlobContainerClient blobServiceClient = new BlobContainerClient(connectionString,containerName);
-
-BlobClient blobClient = blobServiceClient.GetBlobClient(blobName);
-await blobClient.UploadAsync(filepath, true);
-Console.WriteLine("Upload the blob");
-
-//Console.WriteLine("Creating the container");
-
-//await blobServiceClient.CreateBlobContainerAsync(containerName,PublicAccessType.Blob);
-
-//Console.WriteLine("Container creation complete");
+await foreach (BlobItem blobItem in blobContainerClient.GetBlobsAsync())
+{
+    Console.WriteLine("The Blob Name is {0}", blobItem.Name);
+    Console.WriteLine("The Blob Size is {0}", blobItem.Properties.ContentLength);
+}
